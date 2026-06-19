@@ -18,8 +18,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize Supabase (Optional for local testing if not configured yet)
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.DATA_LAYER_ENDPOINT;
+const supabaseKey = process.env.DATA_LAYER_SERVICE_ROLE_KEY || process.env.DATA_LAYER_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 // In-memory fallback if Supabase is not configured
