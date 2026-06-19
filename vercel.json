@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/v1/scans",
+      "dest": "server.js"
+    },
+    {
+      "src": "/v1/scans/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/v1/leads",
+      "dest": "server.js"
+    },
+    {
+      "src": "/report/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/$",
+      "dest": "server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/$1"
+    }
+  ]
+}

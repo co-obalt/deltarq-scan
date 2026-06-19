@@ -1,0 +1,50 @@
+{
+  "name": "deltarq-scan",
+  "version": "0.1.0",
+  "description": "Local-first CLI security audit tool for startups — scan your infrastructure for SOC 2 readiness gaps",
+  "type": "module",
+  "bin": {
+    "deltarq-scan": "./bin/deltarq-scan.js"
+  },
+  "main": "bin/deltarq-scan.js",
+  "scripts": {
+    "scan": "node bin/deltarq-scan.js",
+    "test": "vitest run",
+    "server": "node server.js"
+  },
+  "keywords": [
+    "security",
+    "audit",
+    "soc2",
+    "compliance",
+    "scanner",
+    "cli",
+    "devops",
+    "infrastructure"
+  ],
+  "author": "DELTARQ",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.5",
+    "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "framer-motion": "^12.40.0",
+    "glob": "^10.4.5",
+    "js-yaml": "^4.1.0",
+    "lucide-react": "^1.21.0",
+    "ora": "^8.1.1",
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^3.6.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
