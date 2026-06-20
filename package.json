@@ -4,7 +4,7 @@
   "description": "Local-first CLI security audit tool for startups — scan your infrastructure for SOC 2 readiness gaps",
   "type": "module",
   "bin": {
-    "deltarq-scan": "./bin/deltarq-scan.js"
+    "deltarq-scan": "bin/deltarq-scan.js"
   },
   "main": "bin/deltarq-scan.js",
   "scripts": {
