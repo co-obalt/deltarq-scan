@@ -5,7 +5,7 @@
 
 import path from 'path';
 import yaml from 'js-yaml';
-import { readFileSafe, findFiles, parseEnvContent } from '../utils/fileUtils.js';
+import { readFileSafe, findFiles, parseEnvContent, fileExists } from '../utils/fileUtils.js';
 
 /**
  * Run all file-based scans on the target directory
@@ -217,6 +217,19 @@ async function scanForAuditLogs(targetDir) {
     '**/logging.conf',
     '**/logger.*',
   ]);
+
+  // Only run the audit trail checks if the project actually contains source code or manifest files
+  const hasCodeFiles = sourceFiles.length > 0 ||
+                       fileExists(path.join(targetDir, 'package.json')) ||
+                       fileExists(path.join(targetDir, 'requirements.txt')) ||
+                       fileExists(path.join(targetDir, 'pyproject.toml')) ||
+                       fileExists(path.join(targetDir, 'go.mod')) ||
+                       fileExists(path.join(targetDir, 'Gemfile')) ||
+                       fileExists(path.join(targetDir, 'Dockerfile'));
+
+  if (!hasCodeFiles) {
+    return findings;
+  }
 
   // Known audit/logging library patterns
   const auditPatterns = [

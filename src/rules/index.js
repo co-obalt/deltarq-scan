@@ -7,6 +7,7 @@ import { INFRA_001, INFRA_002 } from './infrastructure.js';
 import { IAM_001, IAM_002, IAM_003 } from './identity.js';
 import { DB_001, DB_002 } from './data.js';
 import { LOG_001 } from './logging.js';
+import { GIT_001 } from './git.js';
 
 /**
  * All registered rules, indexed by ID
@@ -20,6 +21,7 @@ export const RULES = {
   'DB-001': DB_001,
   'DB-002': DB_002,
   'LOG-001': LOG_001,
+  'GIT-001': GIT_001,
 };
 
 /**

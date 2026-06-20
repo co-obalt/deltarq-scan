@@ -147,13 +147,13 @@ async function main() {
 
   // Phase 5: Git Scanner
   if (!flags.json) {
-    const gitSpinner = ora({ text: 'Scanning git history...', indent: 3 }).start();
+    const gitSpinner = ora({ text: 'Scanning git repository...', indent: 3 }).start();
     var gitFindings = await runGitScanner(targetDir);
     gitSpinner.stop();
 
     const gitIssues = gitFindings.filter(f => !f.passed).length;
     printScanPhase(
-      'Scanning git history...',
+      'Scanning git repository...',
       gitIssues > 0 ? 'Warning detected' : 'Clean',
       gitIssues > 0 ? 'warning' : 'ok'
     );
