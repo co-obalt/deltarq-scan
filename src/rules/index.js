@@ -3,7 +3,7 @@
  * Import and re-export all rules for the scanner engine
  */
 
-import { INFRA_001, INFRA_002 } from './infrastructure.js';
+import { INFRA_001, INFRA_002, INFRA_003, INFRA_004 } from './infrastructure.js';
 import { IAM_001, IAM_002, IAM_003 } from './identity.js';
 import { DB_001, DB_002 } from './data.js';
 import { LOG_001 } from './logging.js';
@@ -15,6 +15,8 @@ import { GIT_001 } from './git.js';
 export const RULES = {
   'INFRA-001': INFRA_001,
   'INFRA-002': INFRA_002,
+  'INFRA-003': INFRA_003,
+  'INFRA-004': INFRA_004,
   'IAM-001': IAM_001,
   'IAM-002': IAM_002,
   'IAM-003': IAM_003,

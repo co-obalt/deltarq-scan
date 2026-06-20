@@ -22,3 +22,23 @@ export const INFRA_002 = {
   remediation: 'Bind database ports to 127.0.0.1 only (e.g., "127.0.0.1:5432:5432").',
   sopLink: 'https://docs.docker.com/compose/networking/',
 };
+
+export const INFRA_003 = {
+  id: 'INFRA-003',
+  name: 'Missing Lockfile (Supply Chain)',
+  severity: 'HIGH',
+  category: 'Infrastructure',
+  description: 'No package-lock.json or yarn.lock found. This violates SOC 2 requirements for deterministic, reproducible builds and leaves you vulnerable to dependency hijacking.',
+  remediation: 'Generate and commit a lockfile using your package manager (e.g., run npm install).',
+  sopLink: 'https://docs.npmjs.com/cli/v10/configuring-npm/package-lock-json',
+};
+
+export const INFRA_004 = {
+  id: 'INFRA-004',
+  name: 'Insecure CI/CD Pipeline',
+  severity: 'CRITICAL',
+  category: 'Infrastructure',
+  description: 'Your GitHub Actions workflow uses dangerous triggers (like pull_request_target). Malicious PRs could steal your repository secrets or tamper with your releases.',
+  remediation: 'Remove the pull_request_target trigger, or carefully gate access using environment protection rules.',
+  sopLink: 'https://securitylab.github.com/research/github-actions-preventing-pwn-requests/',
+};

@@ -5,3 +5,4 @@ plan.txt
 vercel.json
 .env
 tests/
+public/

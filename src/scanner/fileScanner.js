@@ -31,6 +31,14 @@ export async function runFileScanner(targetDir) {
   const logFindings = await scanForAuditLogs(targetDir);
   findings.push(...logFindings);
 
+  // Scan lockfiles (INFRA-003)
+  const lockFindings = await scanLockfiles(targetDir);
+  findings.push(...lockFindings);
+
+  // Scan CI pipelines (INFRA-004)
+  const ciFindings = await scanCIPipelines(targetDir);
+  findings.push(...ciFindings);
+
   return findings;
 }
 
@@ -78,15 +86,32 @@ async function scanEnvFiles(targetDir) {
       });
     }
 
-    // IAM-002: Check for hardcoded AWS keys
+    // IAM-002: Check for hardcoded Cloud/API Secrets (AWS, Stripe, Slack, GitHub)
     const hasAccessKey = parsed.AWS_ACCESS_KEY_ID || parsed.AWS_ACCESS_KEY;
     const hasSecretKey = parsed.AWS_SECRET_ACCESS_KEY || parsed.AWS_SECRET_KEY;
-    if (hasAccessKey && hasSecretKey) {
+    let foundSecret = null;
+
+    if (hasAccessKey && hasSecretKey) foundSecret = 'AWS credentials';
+
+    if (!foundSecret) {
+      // Check values against regex patterns
+      const stripePattern = /^sk_live_[a-zA-Z0-9]+$/;
+      const slackPattern = /^xox[bap]-[0-9A-Za-z\-]+$/;
+      const githubPattern = /^gh[po]_[a-zA-Z0-9]{36}$/;
+
+      for (const value of Object.values(parsed)) {
+        if (stripePattern.test(value)) { foundSecret = 'Stripe Live Secret'; break; }
+        if (slackPattern.test(value)) { foundSecret = 'Slack Token'; break; }
+        if (githubPattern.test(value)) { foundSecret = 'GitHub Token'; break; }
+      }
+    }
+
+    if (foundSecret) {
       findings.push({
         rule: 'IAM-002',
         severity: 'HIGH',
         passed: false,
-        detail: `Hardcoded AWS credentials found in ${relPath}`,
+        detail: `Hardcoded ${foundSecret} found in ${relPath}`,
         file: relPath,
       });
     }
@@ -308,6 +333,56 @@ async function scanForAuditLogs(targetDir) {
     });
   }
 
+  return findings;
+}
+
+/**
+ * Scan for missing lockfiles (Supply Chain Security)
+ */
+async function scanLockfiles(targetDir) {
+  const findings = [];
+  const hasPkgJson = fileExists(path.join(targetDir, 'package.json'));
+
+  if (hasPkgJson) {
+    const hasNpmLock = fileExists(path.join(targetDir, 'package-lock.json'));
+    const hasYarnLock = fileExists(path.join(targetDir, 'yarn.lock'));
+    const hasPnpmLock = fileExists(path.join(targetDir, 'pnpm-lock.yaml'));
+
+    if (!hasNpmLock && !hasYarnLock && !hasPnpmLock) {
+      findings.push({
+        rule: 'INFRA-003',
+        severity: 'HIGH',
+        passed: false,
+        detail: 'package.json exists but no lockfile found — builds are non-deterministic',
+        file: 'package.json',
+      });
+    }
+  }
+  return findings;
+}
+
+/**
+ * Scan CI/CD pipelines for dangerous triggers
+ */
+async function scanCIPipelines(targetDir) {
+  const findings = [];
+  const workflows = await findFiles(targetDir, ['.github/workflows/*.yml', '.github/workflows/*.yaml']);
+
+  for (const workflow of workflows) {
+    const content = readFileSafe(workflow);
+    if (!content) continue;
+
+    const relPath = path.relative(targetDir, workflow);
+    if (content.includes('pull_request_target:')) {
+      findings.push({
+        rule: 'INFRA-004',
+        severity: 'CRITICAL',
+        passed: false,
+        detail: `Dangerous "pull_request_target" trigger used in ${relPath}`,
+        file: relPath,
+      });
+    }
+  }
   return findings;
 }
 

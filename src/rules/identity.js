@@ -15,12 +15,12 @@ export const IAM_001 = {
 
 export const IAM_002 = {
   id: 'IAM-002',
-  name: 'Long-Lived Access Keys in .env',
+  name: 'Hardcoded Cloud/API Secrets',
   severity: 'HIGH',
   category: 'Identity',
-  description: 'Hardcoded AWS keys with no rotation = one git leak away from a $50,000 crypto mining bill.',
-  remediation: 'Use IAM roles, environment-based credentials, or AWS SSO instead of hardcoded keys.',
-  sopLink: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html',
+  description: 'Hardcoded API tokens or cloud keys with no rotation = one git leak away from a massive breach or financial loss.',
+  remediation: 'Use IAM roles, environment-based credentials, or secret managers (like AWS Secrets Manager or Vault) instead of hardcoding keys.',
+  sopLink: 'https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html',
 };
 
 export const IAM_003 = {

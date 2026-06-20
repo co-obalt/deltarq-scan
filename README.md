@@ -22,8 +22,10 @@ npx deltarq-scan
 | `IAM-001` | 🔴 CRITICAL | Wildcard IAM policies (`Action: *`, `Resource: *`) |
 | `DB-001` | 🔴 CRITICAL | Postgres with no SSL on public endpoints |
 | `INFRA-001` | 🔴 CRITICAL | Docker containers running as root |
-| `IAM-002` | 🟠 HIGH | Hardcoded AWS access keys in `.env` |
+| `INFRA-004` | 🔴 CRITICAL | Insecure CI/CD workflow (Dangerous `pull_request_target` in GitHub Actions) |
+| `IAM-002` | 🟠 HIGH | Hardcoded Cloud/API Secrets (AWS, Stripe, Slack, GitHub keys in `.env`) |
 | `INFRA-002` | 🟠 HIGH | Database ports exposed to all interfaces |
+| `INFRA-003` | 🟠 HIGH | Missing package lockfile (Deterministic builds/SOC 2 control) |
 | `LOG-001` | 🟠 HIGH | No structured audit trail / logging |
 | `IAM-003` | 🟡 MEDIUM | No MFA on AWS root account |
 | `DB-002` | 🟡 MEDIUM | No connection pool limits |

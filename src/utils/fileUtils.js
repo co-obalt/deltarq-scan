@@ -38,7 +38,7 @@ export async function findFiles(baseDir, patterns) {
       absolute: true,
       nodir: true,
       dot: true,
-      ignore: ['**/node_modules/**', '**/.git/**'],
+      ignore: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**', '**/.next/**', '**/.vercel/**', '**/coverage/**', '**/.out/**'],
     });
     results.push(...matches);
   }
