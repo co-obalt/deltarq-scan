@@ -1,21 +1,17 @@
-# DELTARQ Scanner
+# deltarq-scan
 
-**Scan your startup's infrastructure for security gaps in 30 seconds.**
+**Scan your startup's codebase and infrastructure for security gaps in 30 seconds.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-6C5CE7.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933.svg)](https://nodejs.org/)
 
 ---
 
-## What is this?
-
-`deltarq-scan` is a **local-first, read-only** CLI security audit tool that checks your project's configuration for common security gaps that block enterprise deals and SOC 2 compliance.
-
-**Zero install. Zero data shared. 30 seconds.**
-
 ```bash
 npx deltarq-scan
 ```
+
+`deltarq-scan` is a **local-first, zero-install, read-only** CLI security audit tool. It scans your repository (configurations, environment variables, IAM policies, git history) for critical security gaps that block enterprise deals, fail SOC 2 audits, or expose you to immediate breach.
 
 ---
 
@@ -152,7 +148,19 @@ node bin/deltarq-scan.js
 node bin/deltarq-scan.js ./tests/fixtures --no-upload
 ```
 
-### 3. Test Full Upload Pipeline locally
+### 3. Test Global CLI Command Locally (`npm link`)
+Before publishing to the npm registry, you can test the global `npx deltarq-scan` command in any directory on your computer by linking it:
+```bash
+# 1. In the deltarq-scan project root, run:
+npm link
+
+# 2. Go to any other directory/project folder and run:
+npx deltarq-scan
+# or simply:
+deltarq-scan
+```
+
+### 4. Test Full Upload Pipeline Locally
 You can spin up a local Express server and test uploader integration directly.
 
 **Terminal 1: Start Dashboard API Server**
@@ -170,7 +178,7 @@ npm run server
   DELTARQ_API_URL="http://localhost:3000/v1/scans" DELTARQ_DASHBOARD_URL="http://localhost:3000" node bin/deltarq-scan.js ./tests/fixtures
   ```
 
-### 4. Run Automated Unit Tests
+### 5. Run Automated Unit Tests
 ```bash
 # Run Vitest test runner
 npm test
@@ -189,8 +197,8 @@ Deploy the unified Express server and static dashboard using the Vercel CLI from
 vercel --prod
 ```
 Be sure to set the following **Environment Variables** on your Vercel Dashboard:
-- `SUPABASE_URL` = your-supabase-project-url
-- `SUPABASE_ANON_KEY` = your-supabase-public-anon-key
+- `DATA_LAYER_ENDPOINT` = your-supabase-project-url
+- `DATA_LAYER_ANON_KEY` = your-supabase-public-anon-key (or `DATA_LAYER_SERVICE_ROLE_KEY` for higher privilege)
 - `DELTARQ_DASHBOARD_URL` = your-deployed-vercel-domain (e.g. `https://deltarq-scan.vercel.app`)
 
 ---

@@ -25,6 +25,7 @@ import { printBanner, printScanPhase, printReport } from '../src/output/terminal
 import { uploadWithConsent } from '../src/output/uploader.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import fs from 'fs';
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -67,6 +68,12 @@ if (flags.help) {
 // Main scan flow
 async function main() {
   const targetDir = resolveTargetDir(targetArg);
+  
+  if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
+    console.error(chalk.red.bold(`\n  ✗ Error: Target path "${targetDir}" is not a valid directory.\n`));
+    process.exit(1);
+  }
+
   const allFindings = [];
 
   // Print banner (unless JSON mode)
